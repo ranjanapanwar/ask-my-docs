@@ -80,7 +80,6 @@ httpx-sse==0.4.3
     # via langchain-community
 huggingface-hub==1.9.0
     # via
-    #   langchain-huggingface
     #   sentence-transformers
     #   tokenizers
     #   transformers
@@ -107,11 +106,8 @@ langchain-core==1.2.26
     #   langchain-classic
     #   langchain-community
     #   langchain-groq
-    #   langchain-huggingface
     #   langchain-text-splitters
 langchain-groq==1.1.2
-    # via ask-my-docs
-langchain-huggingface==1.2.1
     # via ask-my-docs
 langchain-text-splitters==1.1.1
     # via
@@ -284,9 +280,7 @@ tenacity==9.1.4
 threadpoolctl==3.6.0
     # via scikit-learn
 tokenizers==0.22.2
-    # via
-    #   langchain-huggingface
-    #   transformers
+    # via transformers
 torch==2.11.0
     # via sentence-transformers
 tqdm==4.67.3
