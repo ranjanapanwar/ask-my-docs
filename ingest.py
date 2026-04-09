@@ -2,7 +2,7 @@ from fastapi import FastAPI , UploadFile ,  File
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pinecone import Pinecone
-from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage
 from dotenv import load_dotenv
@@ -18,9 +18,9 @@ load_dotenv()
 app = FastAPI()
 pc = Pinecone(api_key = os.getenv("PINECONE_API_KEY"))
 index = pc.Index(os.getenv("PINECONE_INDEX"))
-embedder = HuggingFaceInferenceAPIEmbeddings(
-    api_key=os.getenv("HF_TOKEN"),
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
+embedder = HuggingFaceEndpointEmbeddings(
+    model="sentence-transformers/all-MiniLM-L6-v2",
+    huggingfacehub_api_token=os.getenv("HF_TOKEN")
 )
 key = os.getenv("GROQ_API_KEY")
 llm = ChatGroq(model="llama-3.1-8b-instant", api_key=key)
@@ -93,6 +93,7 @@ def chunk_documents(docs):
 def embed_and_upsert(chunks, namespace):
     texts = [chunk.page_content for chunk in chunks]
     vectors = embedder.embed_documents(texts)
+
     records = []
     for vector , chunk in zip(vectors, chunks): 
         records.append({
